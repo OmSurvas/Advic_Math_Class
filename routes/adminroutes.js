@@ -17,6 +17,19 @@ function checkLogin(req,res,next){
         }
     
     }
+router.get('/logout', (req, res) => {
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Error destroying session:", err);
+                return res.status(500).send("Failed to log out");
+            }
+            // Clear the cookie
+            res.clearCookie('connect.sid'); // 'connect.sid' is the default session cookie name
+            // res.send("Logged out successfully");
+            res.redirect("/admin")
+            // res.send("<script>alert('Logged out successfully');window.location.replace('/')</script>");
+        });
+    });
 
 router.get("/",checkLogin,function(req,res){
     res.render("admin/home.ejs")
